@@ -1,0 +1,9 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.surveyList;
+
+public interface surveyListService {
+	void createSurvey(surveyList surveyList);
+	
+
+}

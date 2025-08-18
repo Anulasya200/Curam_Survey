@@ -1,0 +1,8 @@
+package com.example.demo.dto;
+
+public class Questiondto {
+	private String questionId;
+	private String answertype;
+	
+
+}

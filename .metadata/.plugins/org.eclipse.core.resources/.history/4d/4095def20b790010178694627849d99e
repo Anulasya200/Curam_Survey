@@ -1,0 +1,29 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+@Data
+@Entity
+public class surveyList {
+	   @Id
+       @GeneratedValue(strategy = GenerationType.AUTO)
+	   	private int id;
+	    private int surveyId;
+	 	private String surveyName;
+	    private String createdBy;
+	    private LocalDateTime createdDate;
+	    private LocalDateTime modifiedDate;
+	    @Column(columnDefinition = "JSON")
+	    private List<Map<String, Object>> questionsConfigured;
+	    private String status;
+	    private int version;
+}

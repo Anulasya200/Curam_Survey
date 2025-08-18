@@ -1,0 +1,98 @@
+package com.example.demo.controller;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.surveyList;
+import com.example.demo.surveyListImplementation.surveyImpl;
+
+@RestController
+@RequestMapping("/Survey/")
+public class SurveyController {
+	
+	@Autowired
+	private surveyImpl simpli;
+	@PostMapping
+	public ResponseEntity<surveyList> createSurvey(@RequestBody surveyList surveyRequest){
+		surveyList survey=simpli.createSurvey(surveyRequest);
+		return ResponseEntity.ok(survey);
+		
+	}
+	@GetMapping("/getAll")
+	public ResponseEntity<List<surveyList>> getSurveyAll(){
+		List<surveyList> surveys = simpli.getAllSurvey();
+	    return ResponseEntity.ok(surveys);
+	}
+	
+	@GetMapping("/surveys/{id}")
+	public ResponseEntity<?> getSurveyById(@PathVariable int id) {
+	    surveyList survey = simpli.getSurveyId(id);
+	    if (survey==null) {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Survey Id: "+ id);
+	    }
+	    return ResponseEntity.ok(survey);
+	}
+	@GetMapping("/surveys/{surveyName}")
+	public ResponseEntity<?> getSurveyByName(@PathVariable String surveyName) {
+	    List<surveyList>  survey = simpli.getSurveyName(surveyName);
+	    if (survey==null) {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Survey Id: "+ surveyName);
+	    }
+	    return ResponseEntity.ok(survey);
+	}
+	@PostMapping
+	public ResponseEntity<?> updateSurvey(@RequestBody surveyList surveyRequest){
+		surveyList exist=simpli.getSurveyId(surveyRequest.getId());
+		if (exist==null) {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Survey");
+	    }
+		
+		exist.setModifiedDate(LocalDateTime.now());
+		exist.setStatus("Over Ridden");
+		simpli.updateSurvey(exist);
+		
+		// Create a new survey object for the new version
+		surveyList newSurvey = new surveyList();
+		newSurvey.setSurveyName(surveyRequest.getSurveyName());
+		newSurvey.setQuestionsConfigured(surveyRequest.getQuestionsConfigured());
+		newSurvey.setCreatedBy(exist.getCreatedBy());
+		newSurvey.setCreatedDate(exist.getCreatedDate());
+		newSurvey.setModifiedDate(LocalDateTime.now());
+		newSurvey.setStatus("Final");
+		newSurvey.setVersion(exist.getVersion() + 1);
+		
+       
+		return ResponseEntity.ok(newSurvey);
+
+		
+		
+	}
+	
+	
+	
+	@DeleteMapping("/survey/{id}")
+	public ResponseEntity<?> deleteSurvey(@PathVariable int id) {
+	    surveyList survey = simpli.getSurveyId(id);
+	    if (survey==null) {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Survey Id: "+ id);
+	    }
+	    simpli.deleteSurvey(id);
+	    return ResponseEntity.ok(survey);
+	    
+	}
+	
+	
+	
+
+}

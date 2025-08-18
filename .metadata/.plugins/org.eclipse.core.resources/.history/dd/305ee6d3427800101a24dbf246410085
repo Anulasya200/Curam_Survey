@@ -1,0 +1,23 @@
+package com.example.demo.surveyListImplementation;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.entity.surveyList;
+import com.example.demo.repositary.SurveyRepositary;
+
+public class surveyImpl {
+	@Autowired
+	SurveyRepositary srepo;
+	
+	void createSurvey(surveyList surveyList) {
+	
+	}
+	List<surveyList> getAllSurvey(){
+		return srepo.findAll();
+	}
+	surveyList getSurveyId(int Id) {
+		return srepo.getById(Id);
+	}
+}

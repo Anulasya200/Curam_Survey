@@ -1,0 +1,70 @@
+package com.example.demo.surveyListImplementation;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.surveyList;
+import com.example.demo.repositary.SurveyRepositary;
+import com.example.demo.service.surveyListService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Service
+public class surveyImpl implements surveyListService
+{
+
+	@Autowired
+	SurveyRepositary srepo;
+	
+	@Override
+	public surveyList createSurvey(surveyList surveyList) {
+		// TODO Auto-generated method stub
+		return srepo.save(surveyList);
+		
+	}
+
+	@Override
+	public List<surveyList> getAllSurvey() {
+		// TODO Auto-generated method stub
+		return srepo.findAll();
+	}
+
+	@Override
+	public surveyList getSurveyId(int id) {
+		// TODO Auto-generated method stub
+		Optional<surveyList> se=srepo.findById(id);
+		return se.get();
+	}
+
+	@Override
+	public List<surveyList> getSurveyName(String surveyName) {
+		// TODO Auto-generated method stub
+		List<surveyList> sr=srepo.findBySurveyName(surveyName);
+		return sr;
+	}
+
+	@Override
+	public void deleteSurvey(int id) {
+		srepo.deleteById(id);
+		
+	}
+
+	@Override
+	public surveyList updateSurvey(surveyList surveyList) {
+		// TODO Auto-generated method stub
+		return srepo.save(surveyList);
+	}
+
+	@Override
+	public String convert(Object Json) throws JsonProcessingException {
+		ObjectMapper objectmap=new ObjectMapper();
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+}

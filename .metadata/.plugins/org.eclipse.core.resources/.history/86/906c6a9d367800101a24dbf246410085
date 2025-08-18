@@ -1,0 +1,19 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
+
+public class Questiondto {
+	 private String surveyName;
+	    private String createdBy;
+	    private String createdDate;
+	    private String modifiedDate;
+	    private String status;
+	    private int version;
+	    private List<Question> questionsConfigured;
+	private String questionId;
+	private String answertype;
+	
+
+}
